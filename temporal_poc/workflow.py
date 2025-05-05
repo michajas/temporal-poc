@@ -18,18 +18,20 @@ class CryptoTransfer:
             # non_retryable_error_types=["InvalidAccountError", "InsufficientFundsError"],
         )
         
-        authorize_payment_result = await workflow.execute_activity(
-            authorize_payment, 
-            transfer_details, 
-            start_to_close_timeout=timedelta(seconds=5), 
-            retry_policy=retry_policy
-        )
         verify_wallet_result = await workflow.execute_activity(
             verify_wallet, 
             transfer_details, 
             start_to_close_timeout=timedelta(seconds=5), 
             retry_policy=retry_policy
         )
+
+        authorize_payment_result = await workflow.execute_activity(
+            authorize_payment, 
+            transfer_details, 
+            start_to_close_timeout=timedelta(seconds=5), 
+            retry_policy=retry_policy
+        )
+        
         send_crypto_result = await workflow.execute_activity(
             send_crypto, 
             transfer_details, 
