@@ -115,3 +115,6 @@ You should now see the workflow executing, with logs appearing in the worker ter
 - workflow tries to validate wallet, authorize card and then send crypto. If any of the steps fails it's automatically handled and retried according to the policy
 - you can shut down worker process and restart. Workflow will resume at the same place
 - whole business logic lays in activities
+
+## Reference material
+https://learn.temporal.io/getting_started/python/
