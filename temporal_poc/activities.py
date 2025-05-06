@@ -146,5 +146,3 @@ async def send_crypto(transfer_details: TransferDetails) -> str:
         raise ApplicationError(
             f"Unexpected error during crypto send: {e}", non_retryable=True
         ) from e
-
-

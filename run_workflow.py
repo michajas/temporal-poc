@@ -3,7 +3,7 @@ import traceback
 
 from temporalio.client import Client, WorkflowFailureError
 
-from temporal_poc.shared import CRYPTO_TRANSFER_TASK_QUEUE_NAME, TransferDetails
+from temporal_poc.shared import CRYPTO_TRANSFER_TASK_QUEUE_NAME, AuthorizeInput, TransferDetails
 from temporal_poc.workflow import CryptoTransfer
 
 
@@ -20,14 +20,22 @@ async def main() -> None:
     )
 
     try:
-        result = await client.execute_workflow(
+        result = await client.start_workflow(
             CryptoTransfer.run,
             data,
             id="crypto-transfer-v1",
             task_queue=CRYPTO_TRANSFER_TASK_QUEUE_NAME,
         )
+        print(f"Started workflow. Workflow ID: {result.id}")
+        print(f"Waiting for incoming simulated webhook")
 
-        print(f"Result: {result}")
+        # Simulate webhook
+        await asyncio.sleep(5)
+        signal_result = await result.signal(
+            CryptoTransfer.approve,
+            AuthorizeInput(name="Card XXX"),
+        )
+        print(await result.result())
 
     except WorkflowFailureError:
         print("Got expected exception: ", traceback.format_exc())

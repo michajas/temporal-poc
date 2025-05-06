@@ -11,3 +11,5 @@ class TransferDetails(BaseModel):
     amount: float
     reference_id: str
 
+class AuthorizeInput(BaseModel):
+    name: str
